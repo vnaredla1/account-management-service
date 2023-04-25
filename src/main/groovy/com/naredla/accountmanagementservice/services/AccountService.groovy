@@ -22,7 +22,7 @@ class AccountService {
         userAccountRepository.save(accountUser)
     }
 
-    @Cacheable('User')
+    @Cacheable(value = 'User', key = '#id')
     Optional getAccountUserById(String id){
         userAccountRepository.findById(id)
     }

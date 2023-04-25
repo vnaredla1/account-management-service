@@ -1,6 +1,7 @@
 package com.naredla.accountmanagementservice.controllers
 
 import com.naredla.accountmanagementservice.services.AccountService
+import com.naredla.accountmanagementservice.services.RedisService
 import com.naredla.accountmanagementservice.store.AccountUser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -14,9 +15,17 @@ class AccountController {
     @Autowired
     private AccountService accountService
 
+    @Autowired
+    private RedisService redisService
+
     @GetMapping('/getAllUsers')
     List<AccountUser> getAllAccounts(){
         return accountService.getAllAccounts()
+    }
+
+    @GetMapping('/getAllCachedUsers')
+    List getAllCachedAccounts(){
+        return redisService.getCachedData()
     }
 
     @GetMapping('/getUserById/{id}')
