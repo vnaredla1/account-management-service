@@ -26,6 +26,7 @@ class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager()
+        //TODO: Add a data source to retrieve user data for dynamic validation.
         manager.createUser(User.withUsername("snaredla")
                 .password(passwordEncoder().encode("naredlav1"))
                 .roles("USER")
