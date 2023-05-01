@@ -1,28 +1,33 @@
 package com.naredla.accountmanagementservice.services
 
 import com.naredla.accountmanagementservice.store.AccountUser
-import org.springframework.beans.factory.annotation.Autowired
+import groovy.util.logging.Slf4j
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
-import java.nio.charset.StandardCharsets
-
+@Slf4j
 @Service
 class RedisService {
 
-    @Autowired
+    private final String REDIS_KEY = 'redisKey'
+
     private RedisTemplate redisTemplate
 
-    @Autowired
-    private AccountService accountService
+    RedisService(RedisTemplate redisTemplate){
+        this.redisTemplate = redisTemplate
+    }
 
+    void setCacheValues(AccountUser accountUser){
+        String id = accountUser.id
+        redisTemplate.boundHashOps(REDIS_KEY).put(id, accountUser)
+        log.info(id + ' is stored in the redis cache')
+    }
+
+    AccountUser getCacheValues(String id){
+        return redisTemplate.opsForHash().get(REDIS_KEY, id) as AccountUser
+    }
 
     List getCachedData(){
-        List cachedKeys = []
-        Object storedKeys = redisTemplate.getConnectionFactory().getConnection().keys('*'.bytes)
-        storedKeys.forEach { key -> (
-            cachedKeys.add(new String(key, StandardCharsets.UTF_8))
-        )}
-        return cachedKeys
+        return redisTemplate.opsForHash().keys('redisKey') as List
     }
 }

@@ -20,13 +20,10 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    //We should exclude lettuce which is defaulted and make sure that it connects to jedis client
-    implementation ('org.springframework.boot:spring-boot-starter-data-redis') {
-        exclude group: 'io.lettuce.lettuce-core'
-    }
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'redis.clients:jedis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.codehaus.groovy:groovy'
-    implementation 'redis.clients:jedis:3.6.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
